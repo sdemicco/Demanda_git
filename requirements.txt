@@ -1,11 +1,11 @@
 # NumPy primero para que las demás wheels lo detecten
-numpy==1.26.4
+numpy
 
 # SciPy antes de statsmodels para evitar compilación
-scipy==1.11.4
+scipy
 
-pandas==2.2.2
-statsmodels==0.14.2
-matplotlib==3.8.4
-openpyxl==3.1.2
-streamlit==1.36.0
+pandas
+statsmodels
+matplotlib
+openpyxl
+streamlit
