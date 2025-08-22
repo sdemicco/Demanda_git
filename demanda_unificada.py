@@ -192,7 +192,8 @@ def fit_ecm(y_dem: pd.Series, x_emae: pd.Series, test_frac: float = 0.10):
         dx_t = (log_x.loc[t] - log_x.loc[t - pd.offsets.MonthBegin(1)])
         ect_prev = log_y_prev - lr_model.predict(pd.DataFrame({"log_x":[log_x.loc[t - pd.offsets.MonthBegin(1)]]})).iloc[0]
         row = pd.DataFrame({"dlog_x":[dx_t], "ECT_L1":[ect_prev], "Month":[t.month]})
-        dly_hat = float(ecm_model.predict(row))
+        # --- cambio: evitar float(Series) deprecado
+        dly_hat = ecm_model.predict(row).to_numpy().item()
         log_y_prev = log_y_prev + dly_hat
         pred_levels.append(np.exp(log_y_prev))
     pred_levels = pd.Series(pred_levels, index=test_idx, name="Dem_pred")
@@ -251,7 +252,8 @@ def forecast_ecm(lr_model, ecm_model, y_hist: pd.Series, x_hist: pd.Series, x_fu
         ect_prev = log_y_prev - (a + b * log_x_prev)
 
         row = pd.DataFrame({"dlog_x": [dx_t], "ECT_L1": [ect_prev], "Month": [t.month]})
-        dly_hat = float(ecm_model.predict(row))
+        # --- cambio: evitar float(Series) deprecado
+        dly_hat = ecm_model.predict(row).to_numpy().item()
 
         # Actualizar el nivel de log(y) y guardar pronóstico en niveles
         log_y_prev = log_y_prev + dly_hat
